@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnnuncioFacile AI — Crea annunci multi-marketplace e gestisci eBay</title>
+<meta name="description" content="AnnuncioFacile AI crea annunci per eBay, Subito, Vinted, WhatsApp e Facebook Marketplace. eBay Manager gestisce il lato operativo eBay con integrazione API.">
+<style>
+:root{
+  --red:#d90f14;
+  --red2:#ff4040;
+  --red3:#a00000;
+  --soft:#fff5f5;
+  --bg:#f8f8fa;
+  --text:#1f2430;
+  --muted:#6b7280;
+  --line:#ececf1;
+  --card:#ffffff;
+  --green:#16a34a;
+  --shadow:0 18px 48px rgba(185, 16, 16, .10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  background:linear-gradient(180deg,#fff 0%, #fbfbfc 52%, #fff 100%);
+  color:var(--text);
+  line-height:1.5;
+}
+a{text-decoration:none;color:inherit}
+.container{width:min(1160px,92%);margin:auto}
+
+nav{
+  position:sticky; top:0; z-index:20;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.navbar{
+  height:72px; display:flex; align-items:center; justify-content:space-between; gap:20px;
+}
+.logo{
+  display:flex; align-items:center; gap:10px; font-weight:900; font-size:1.22rem;
+}
+.logo-mark{
+  width:40px;height:40px;border-radius:12px;
+  display:grid;place-items:center;color:#fff;font-weight:900;
+  background:linear-gradient(135deg,var(--red),var(--red2));
+  box-shadow:0 10px 22px rgba(217,15,20,.28);
+}
+.navlinks{
+  display:flex; gap:20px; align-items:center; color:#4b5563; font-size:.94rem;
+}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:13px 20px; border-radius:13px; font-weight:800;
+  border:1px solid transparent; cursor:pointer;
+  transition:.2s ease;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--red),var(--red2));
+  color:#fff;
+  box-shadow:0 12px 28px rgba(217,15,20,.24);
+}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-secondary{
+  background:#fff; color:var(--text); border-color:var(--line);
+}
+
+.hero-wrap{
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,255,255,.14) 0 8px, transparent 9px) 20px 26px / 34px 34px no-repeat,
+    radial-gradient(circle at 92% 14%, rgba(255,255,255,.18) 0 65px, transparent 66px) no-repeat,
+    linear-gradient(135deg,var(--red3),var(--red) 45%, var(--red2));
+  color:#fff;
+  border-bottom-left-radius:46px;
+  border-bottom-right-radius:46px;
+  box-shadow:0 15px 40px rgba(120,0,0,.12);
+}
+.hero{
+  padding:72px 0 120px;
+  display:grid;
+  grid-template-columns:1.02fr .98fr;
+  gap:42px;
+  align-items:center;
+}
+.badge{
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(255,255,255,.11);
+  color:#fff; border:1px solid rgba(255,255,255,.22);
+  border-radius:999px; padding:8px 14px; font-size:.86rem; font-weight:800;
+}
+.hero h1{
+  font-size:clamp(2.7rem,5.9vw,5.2rem);
+  line-height:.98; letter-spacing:-.05em; margin:18px 0 16px;
+}
+.hero h1 .accent{color:#ffd3d3}
+.hero .subtitle{
+  font-size:clamp(1.3rem,2.4vw,2.2rem);
+  line-height:1.12; font-weight:800; margin:0 0 16px;
+}
+.hero p{
+  font-size:1.12rem; max-width:700px; color:rgba(255,255,255,.93); margin:0;
+}
+.hero-actions{
+  display:flex; gap:12px; flex-wrap:wrap; margin-top:28px;
+}
+.hero .note{
+  margin-top:14px; font-size:.88rem; color:rgba(255,255,255,.82);
+}
+
+.hero-card{
+  background:rgba(255,255,255,.96);
+  color:var(--text);
+  border-radius:26px;
+  padding:18px;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,.35);
+}
+.hero-grid{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:14px;
+}
+.mini{
+  background:#fff; border:1px solid var(--line); border-radius:18px;
+  padding:14px 14px 13px;
+}
+.mini .icon{
+  width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--red),var(--red2)); color:#fff;
+  font-size:1.2rem; margin-bottom:10px;
+}
+.mini strong{display:block; font-size:1rem}
+.mini span{display:block; color:var(--muted); font-size:.9rem}
+.mock-app{
+  margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:22px; overflow:hidden;
+}
+.mock-top{
+  height:54px; display:flex; align-items:center; justify-content:space-between; padding:0 18px;
+  border-bottom:1px solid var(--line); font-weight:900;
+}
+.mock-top .right{font-size:.9rem; color:#4b5563; font-weight:700}
+.mock-body{
+  display:grid; grid-template-columns:220px 1fr 280px; gap:0;
+}
+.sidebar{
+  border-right:1px solid var(--line); padding:16px 14px; background:#fff;
+}
+.side-item{
+  padding:10px 12px; border-radius:12px; color:#4b5563; font-size:.92rem; margin-bottom:6px;
+}
+.side-item.active{background:#fff1f1;color:#c11212;font-weight:800}
+.mainpanel{padding:18px}
+.panel-title{font-size:1.35rem; font-weight:900; margin-bottom:3px}
+.panel-sub{font-size:.88rem;color:var(--muted);margin-bottom:16px}
+.field-row{display:grid;grid-template-columns:1fr 180px; gap:10px}
+.fake-field{
+  height:44px;border:1px solid var(--line);border-radius:12px;
+  padding:0 12px;display:flex;align-items:center;font-size:.9rem;color:#4b5563;background:#fff;
+}
+.upload{
+  margin-top:12px;border:2px dashed #f2b3b3;background:#fffafa;border-radius:18px;
+  min-height:116px;display:grid;place-items:center;text-align:center;color:#7a6a6a;font-size:.9rem;
+}
+.market-grid{
+  margin-top:14px; display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
+}
+.market{
+  padding:10px 8px; border:1px solid var(--line); border-radius:12px; text-align:center; font-size:.85rem; background:#fff;
+}
+.market.ebay{border-color:#f3a1a1;background:#fff4f4;font-weight:800;color:#c11212}
+.cta-row{
+  margin-top:14px; display:flex; gap:8px; flex-wrap:wrap;
+}
+.small-btn{
+  padding:11px 14px;border-radius:12px;font-weight:800;font-size:.88rem;border:1px solid var(--line);background:#fff
+}
+.small-btn.primary{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;border:none}
+.preview{
+  border-left:1px solid var(--line); padding:18px 16px; background:#fff;
+}
+.preview .status{
+  display:inline-block; padding:4px 8px; background:#eefbf3; color:#166534;
+  border-radius:999px; font-size:.75rem; font-weight:900; margin-bottom:10px;
+}
+.preview .tabs{
+  display:flex; gap:12px; font-size:.8rem; color:#6b7280; margin:4px 0 12px;
+}
+.preview .tabs .active{color:#c11212;font-weight:900}
+.preview-box{
+  border:1px solid var(--line); border-radius:14px; padding:12px; font-size:.88rem; color:#4b5563;
+}
+.preview-box strong{display:block;color:#111827;margin-bottom:8px}
+.copy-btn{
+  margin-top:12px; padding:10px 12px; text-align:center; border:1px solid #f4b0b0;
+  color:#c11212; font-weight:800; border-radius:12px;
+}
+
+.floating-features{
+  margin-top:-66px;
+  position:relative; z-index:4;
+}
+.feature-strip{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:14px;
+}
+.feature{
+  background:#fff; border:1px solid var(--line); border-radius:22px; padding:18px 18px;
+  box-shadow:0 14px 32px rgba(31,36,48,.06);
+  display:flex; align-items:center; gap:14px;
+}
+.feature .ficon{
+  width:50px;height:50px;border-radius:16px;background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;display:grid;place-items:center;font-size:1.2rem;flex:0 0 auto;
+}
+.feature strong{display:block;font-size:1rem}
+.feature span{display:block;color:var(--muted);font-size:.9rem}
+
+.section{padding:74px 0}
+.section-head{text-align:center;max-width:780px;margin:0 auto 38px}
+.section-head h2{font-size:clamp(2rem,4vw,3rem);letter-spacing:-.04em;margin:0 0 12px}
+.section-head p{margin:0;color:var(--muted);font-size:1.03rem}
+
+.info-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:24px;
+}
+.card{
+  background:#fff; border:1px solid var(--line); border-radius:26px; padding:28px; box-shadow:0 10px 28px rgba(31,36,48,.05);
+}
+.card .tag{
+  display:inline-block; padding:7px 10px; border-radius:999px; background:var(--soft); color:#c11212;
+  font-size:.77rem; font-weight:900; border:1px solid #ffd1d1;
+}
+.card h3{font-size:1.45rem;margin:12px 0 8px}
+.card p{color:var(--muted);margin:0}
+.list{list-style:none;padding:0;margin:18px 0 0}
+.list li{position:relative;padding-left:26px;margin:12px 0;color:#374151}
+.list li:before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:900}
+
+.marketplace-box{
+  background:linear-gradient(180deg,#fff,#fffaf9);
+  border:1px solid var(--line); border-radius:28px; padding:30px;
+}
+.marketplace-chips{
+  margin-top:20px; display:flex; flex-wrap:wrap; gap:10px;
+}
+.chip{
+  padding:10px 14px; border-radius:999px; border:1px solid var(--line); background:#fff; font-weight:800; font-size:.92rem;
+}
+.chip.primary{
+  background:#fff3f3; border-color:#f1b1b1; color:#c11212;
+}
+.market-note{
+  margin-top:20px; padding:16px 18px; border-radius:18px; background:#fff4f4; border:1px solid #ffd0d0; color:#7c1d1d;
+}
+.market-note strong{display:block;margin-bottom:4px}
+
+.pricing{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:18px; align-items:stretch;
+}
+.plan{
+  background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;
+  display:flex;flex-direction:column;
+}
+.plan.featured{border:2px solid var(--red); box-shadow:0 14px 36px rgba(217,15,20,.12)}
+.ptag{
+  display:inline-flex; align-self:flex-start; padding:6px 10px; border-radius:999px;
+  background:#fff2f2; color:#c11212; border:1px solid #ffd0d0; font-size:.78rem; font-weight:900;
+}
+.plan h3{font-size:1.34rem;margin:12px 0 6px}
+.price{font-size:2rem;font-weight:900;margin:8px 0 12px}
+.price small{font-size:.83rem;font-weight:700;color:var(--muted)}
+.included{font-size:.91rem;color:#374151;min-height:112px}
+.plan ul{padding-left:20px;flex:1;color:#4b5563;font-size:.91rem}
+.plan li{margin:8px 0}
+.buy{
+  width:100%; margin-top:14px;
+}
+.buy.green{background:var(--green);color:#fff}
+.buy.red{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff}
+.fineprint{text-align:center;color:var(--muted);font-size:.88rem;margin-top:18px}
+
+.cta{
+  margin:74px auto 0;
+  background:linear-gradient(135deg,#fff5f5,#fff);
+  border:1px solid #ffd7d7; border-radius:32px; padding:54px 28px; text-align:center;
+}
+.cta h2{font-size:clamp(2rem,4vw,3rem);letter-spacing:-.04em;margin:0 0 12px}
+.cta p{max-width:720px;margin:0 auto 24px;color:var(--muted)}
+
+footer{
+  border-top:1px solid var(--line);
+  padding:30px 0 44px; color:#6b7280; font-size:.9rem; margin-top:34px;
+}
+.footer{
+  display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap;
+}
+
+.toast{
+  position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(130px);
+  background:#1f2430; color:#fff; padding:13px 18px; border-radius:14px;
+  box-shadow:0 18px 40px rgba(0,0,0,.23); transition:.28s ease; z-index:99; font-size:.92rem;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:1080px){
+  .mock-body{grid-template-columns:180px 1fr}
+  .preview{grid-column:1 / -1; border-left:none; border-top:1px solid var(--line)}
+}
+@media(max-width:980px){
+  .pricing{grid-template-columns:repeat(2,1fr)}
+  .feature-strip{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:860px){
+  .navlinks a:not(.btn){display:none}
+  .hero{grid-template-columns:1fr; padding-bottom:86px}
+  .feature-strip{grid-template-columns:1fr}
+  .info-grid{grid-template-columns:1fr}
+  .hero-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+  .pricing{grid-template-columns:1fr}
+  .mock-body{grid-template-columns:1fr}
+  .sidebar{border-right:none;border-bottom:1px solid var(--line)}
+  .field-row{grid-template-columns:1fr}
+  .market-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+.faq-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.faq-item{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 10px 28px rgba(31,36,48,.05);
+}
+.faq-item h3{
+  margin:0 0 8px;
+  font-size:1.08rem;
+}
+.faq-item p{
+  margin:0;
+  color:var(--muted);
+}
+.legal-note{
+  margin-top:22px;
+  padding:18px 20px;
+  background:#fffafa;
+  border:1px solid #ffd7d7;
+  border-radius:18px;
+  color:#6b7280;
+  font-size:.9rem;
+}
+.footer a{
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+@media(max-width:760px){
+  .faq-grid{grid-template-columns:1fr}
+  .hero-actions .btn,
+  .cta .btn{
+    width:100%;
+    margin-left:0 !important;
+  }
+  .marketplace-chips{gap:8px}
+  .chip{font-size:.84rem;padding:9px 11px}
+}
+
+</style>
+</head>
+<body>
+<nav>
+  <div class="container navbar">
+    <a class="logo" href="#top"><span class="logo-mark">A</span> AnnuncioFacile AI</a>
+    <div class="navlinks">
+      <a href="#prodotti">Prodotti</a>
+      <a href="#marketplace">Marketplace</a>
+      <a href="#piani">Piani</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn-primary" href="https://script.google.com/macros/s/AKfycbxZAC-CFOSUvuus-orY61k7kkSgEmOtHaLH86kQJUSdu7nyX4aPtc9HgjZq4-i4CAXF/exec?piano=freeTrial" target="_blank">Prova gratis</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero-wrap">
+  <section class="container hero" id="top">
+    <div>
+      <span class="badge">Licenza mensile per venditori online</span>
+      <h1>AnnuncioFacile <span class="accent">AI</span></h1>
+      <div class="subtitle">Crea annunci per più marketplace.<br>Con <strong>eBay</strong> come canale preferito.</div>
+      <p>AnnuncioFacile AI ti aiuta a creare annunci per <strong>eBay, Subito, Vinted, WhatsApp, Facebook Marketplace</strong> e anche per formule come <strong>“Regala se vieni a prenderlo”</strong>. In parallelo, <strong>eBay Manager</strong> gestisce il lato operativo eBay, che resta il mercato più avanzato grazie all’integrazione completa via API.</p>
+      <div class="hero-actions">
+        <a href="https://script.google.com/macros/s/AKfycbxZAC-CFOSUvuus-orY61k7kkSgEmOtHaLH86kQJUSdu7nyX4aPtc9HgjZq4-i4CAXF/exec?piano=freeTrial" target="_blank" class="btn btn-primary">Attiva la prova gratuita →</a>
+        <a href="#piani" class="btn btn-secondary">Vedi i piani</a>
+      </div>
+      <div class="note">Un solo codice licenza per usare AnnuncioFacile AI, eBay Manager e le ricerche tecniche / mercato.</div>
+      <div style="margin-top:12px;">
+        <a href="https://script.google.com/macros/s/AKfycbzTcIj3tNynqnkG4Pup37gp79amL0AVBMsuk-GO_yb0JoF9ZTi31SkpnXGD3dMc_HaB/exec" target="_blank" style="color:#fff;text-decoration:underline;font-weight:800;">
+          Hai già una licenza? Apri direttamente AnnuncioFacile AI
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-grid">
+        <div class="mini">
+          <div class="icon">✓</div>
+          <strong>Piano mensile</strong>
+          <span>Licenza digitale</span>
+        </div>
+        <div class="mini">
+          <div class="icon">🌐</div>
+          <strong>Accesso</strong>
+          <span>Web app</span>
+        </div>
+        <div class="mini">
+          <div class="icon">📅</div>
+          <strong>Validità</strong>
+          <span>30 giorni</span>
+        </div>
+        <div class="mini">
+          <div class="icon">⚙️</div>
+          <strong>Servizio digitale</strong>
+          <span>Nessuna spedizione fisica</span>
+        </div>
+      </div>
+
+      
+      <div class="mock-app" style="padding:22px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px;">
+          <div>
+            <div style="font-size:1.35rem;font-weight:900;">AnnuncioFacile AI — Web App reale</div>
+            <div style="color:#6b7280;font-size:.92rem;margin-top:4px;">
+              La landing presenta il servizio. La creazione dell’annuncio avviene nella Web App dedicata.
+            </div>
+          </div>
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;background:#eefbf3;color:#166534;border:1px solid #bbf7d0;font-weight:900;font-size:.78rem;">● WEB APP ATTIVA</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px;">
+          <div class="mini">
+            <div class="icon">📦</div>
+            <strong>Dati dell’oggetto</strong>
+            <span>Nome, condizioni, difetti, misure, accessori, prezzo e spedizione.</span>
+          </div>
+          <div class="mini">
+            <div class="icon">📷</div>
+            <strong>Foto</strong>
+            <span>Scatta o carica immagini direttamente da telefono o PC.</span>
+          </div>
+          <div class="mini">
+            <div class="icon">✨</div>
+            <strong>Generazione AI</strong>
+            <span>Crea e adatta testi per i marketplace selezionati.</span>
+          </div>
+          <div class="mini">
+            <div class="icon">🔑</div>
+            <strong>Licenza Suite</strong>
+            <span>Lo stesso codice abilita AnnuncioFacile AI ed eBay Manager.</span>
+          </div>
+        </div>
+
+        <div style="padding:16px;border:1px solid #ffd0d0;background:#fff7f7;border-radius:18px;margin-bottom:18px;">
+          <strong style="display:block;margin-bottom:9px;">Piattaforme disponibili nella Web App</strong>
+          <div class="marketplace-chips" style="margin-top:0;">
+            <span class="chip primary">eBay</span>
+            <span class="chip">Subito.it</span>
+            <span class="chip">Facebook</span>
+            <span class="chip">WhatsApp</span>
+            <span class="chip">Vinted</span>
+            <span class="chip">Svuota cantina / Regalo</span>
+          </div>
+        </div>
+
+        <a href="https://script.google.com/macros/s/AKfycbzTcIj3tNynqnkG4Pup37gp79amL0AVBMsuk-GO_yb0JoF9ZTi31SkpnXGD3dMc_HaB/exec" target="_blank" class="btn btn-primary" style="width:100%;font-size:1rem;">
+          Apri AnnuncioFacile AI →
+        </a>
+        <div style="text-align:center;color:#6b7280;font-size:.82rem;margin-top:10px;">
+          Si apre la Web App stabile cliente in una nuova scheda.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container floating-features">
+  <div class="feature-strip">
+    <div class="feature">
+      <div class="ficon">⚡</div>
+      <div><strong>Annunci più rapidi</strong><span>Crea annunci completi in pochi secondi</span></div>
+    </div>
+    <div class="feature">
+      <div class="ficon">T</div>
+      <div><strong>Testi ottimizzati</strong><span>Contenuti efficaci per più visibilità e vendite</span></div>
+    </div>
+    <div class="feature">
+      <div class="ficon">⇄</div>
+      <div><strong>Marketplace multipli</strong><span>Una base, più destinazioni possibili</span></div>
+    </div>
+    <div class="feature">
+      <div class="ficon">🛒</div>
+      <div><strong>Focus eBay</strong><span>Gestione avanzata grazie a eBay Manager</span></div>
+    </div>
+  </div>
+</div>
+
+<section class="section" id="prodotti">
+  <div class="container">
+    <div class="section-head">
+      <h2>Due strumenti che lavorano insieme</h2>
+      <p>AnnuncioFacile AI si occupa della creazione dei contenuti e delle ricerche; eBay Manager della parte operativa dedicata a eBay.</p>
+    </div>
+
+    <div class="info-grid">
+      <article class="card">
+        <span class="tag">CREAZIONE CONTENUTI</span>
+        <h3>AnnuncioFacile AI</h3>
+        <p>La parte intelligente dell’ecosistema: ti aiuta a trasformare le informazioni del prodotto in annunci pronti, testi ottimizzati e bozze riutilizzabili.</p>
+        <ul class="list">
+          <li>Generazione di annunci per più marketplace</li>
+          <li>Bozze e testi ottimizzati</li>
+          <li>Ricerche tecniche e di mercato incluse nei piani</li>
+          <li>Copiatura rapida del testo generato</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <span class="tag">GESTIONE EBAY</span>
+        <h3>eBay Manager</h3>
+        <p>Lo strumento operativo per chi lavora con eBay: importazioni, filtri, operazioni e gestione più strutturata delle inserzioni.</p>
+        <ul class="list">
+          <li>Strumento specifico per eBay</li>
+          <li>Operazioni eBay incluse nel piano</li>
+          <li>Uso in parallelo con AnnuncioFacile AI</li>
+          <li>Archivio storico su Google Sheet nel piano annuale</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="marketplace">
+  <div class="container">
+    <div class="section-head">
+      <h2>Multi-marketplace, ma con una priorità chiara</h2>
+      <p>AnnuncioFacile AI genera e adatta i contenuti per diversi canali direttamente nella Web App. eBay resta il canale tecnicamente più avanzato grazie all’integrazione completa via API e a eBay Manager.</p>
+    </div>
+
+    <div class="marketplace-box">
+      <h3 style="margin:0;font-size:1.55rem">Marketplace supportati a livello di contenuto</h3>
+      <div class="marketplace-chips">
+        <span class="chip primary">eBay</span>
+        <span class="chip">Subito</span>
+        <span class="chip">Vinted</span>
+        <span class="chip">Facebook Marketplace</span>
+        <span class="chip">WhatsApp</span>
+        <span class="chip">Regala se vieni a prenderlo</span>
+      </div>
+
+      <div class="market-note">
+        <strong>eBay è il mercato preferito</strong>
+        Per eBay avete l’interfacciamento completo via API e il supporto operativo di eBay Manager. Per gli altri canali, AnnuncioFacile AI resta molto utile per creare, adattare e copiare velocemente gli annunci, ma il livello di integrazione non è lo stesso di eBay.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="piani">
+  <div class="container">
+    <div class="section-head">
+      <h2>Scegli il piano più adatto</h2>
+      <p>Un’unica licenza per AnnuncioFacile AI, eBay Manager e ricerche tecniche / mercato.</p>
+    </div>
+
+    <div class="pricing">
+      <article class="plan">
+        <span class="ptag">Per iniziare</span>
+        <h3>Free Trial</h3>
+        <div class="price">€ 0</div>
+        <div class="included">
+          <strong>30 giorni inclusi</strong><br>
+          50 operazioni eBay Manager<br>
+          20 generazioni AnnuncioFacile AI<br>
+          10 ricerche tecniche / mercato
+        </div>
+        <ul>
+          <li>Accesso alla web app per test iniziale</li>
+          <li>Ideale per provare il workflow</li>
+          <li>Nessun costo iniziale</li>
+        </ul>
+        <a href="https://script.google.com/macros/s/AKfycbxZAC-CFOSUvuus-orY61k7kkSgEmOtHaLH86kQJUSdu7nyX4aPtc9HgjZq4-i4CAXF/exec?piano=freeTrial" target="_blank" class="btn buy green">Attiva prova gratuita</a>
+      </article>
+
+      <article class="plan">
+        <span class="ptag">Per provare</span>
+        <h3>Starter</h3>
+        <div class="price">€ 4,99 <small>/ 30 giorni</small></div>
+        <div class="included">
+          <strong>30 giorni inclusi</strong><br>
+          300 operazioni eBay Manager<br>
+          100 generazioni AnnuncioFacile AI<br>
+          25 ricerche tecniche / mercato
+        </div>
+        <ul>
+          <li>Uso completo della web app</li>
+          <li>Import, filtri e report</li>
+          <li>Ideale per inventari piccoli</li>
+        </ul>
+        <a href="https://script.google.com/macros/s/AKfycbxZAC-CFOSUvuus-orY61k7kkSgEmOtHaLH86kQJUSdu7nyX4aPtc9HgjZq4-i4CAXF/exec?piano=starter" target="_blank" class="btn buy red">Acquista Starter</a>
+      </article>
+
+      <article class="plan featured">
+        <span class="ptag">Più scelto</span>
+        <h3>Pro</h3>
+        <div class="price">€ 9,99 <small>/ 30 giorni</small></div>
+        <div class="included">
+          <strong>30 giorni inclusi</strong><br>
+          1000 operazioni eBay Manager<br>
+          300 generazioni AnnuncioFacile AI<br>
+          100 ricerche tecniche / mercato
+        </div>
+        <ul>
+          <li>Più margine operativo</li>
+          <li>Buono per venditori con molte inserzioni</li>
+          <li>Un solo codice licenza</li>
+        </ul>
+        <a href="https://script.google.com/macros/s/AKfycbxZAC-CFOSUvuus-orY61k7kkSgEmOtHaLH86kQJUSdu7nyX4aPtc9HgjZq4-i4CAXF/exec?piano=promo90" target="_blank" class="btn buy red">Acquista Pro</a>
+      </article>
+
+      <article class="plan">
+        <span class="ptag">Per uso continuativo</span>
+        <h3>Annual Pro</h3>
+        <div class="price">€ 49,90 <small>/ 12 mesi</small></div>
+        <div class="included">
+          <strong>12 mesi inclusi</strong><br>
+          5000 operazioni eBay Manager<br>
+          1500 generazioni AnnuncioFacile AI<br>
+          300 ricerche tecniche / mercato
+        </div>
+        <ul>
+          <li>Per chi gestisce inventari ampi</li>
+          <li>Archivio storico su Google Sheet</li>
+          <li>Soluzione adatta a uso regolare</li>
+        </ul>
+        <a href="https://script.google.com/macros/s/AKfycbxZAC-CFOSUvuus-orY61k7kkSgEmOtHaLH86kQJUSdu7nyX4aPtc9HgjZq4-i4CAXF/exec?piano=proAnnuale" target="_blank" class="btn buy red">Acquista Annual Pro</a>
+      </article>
+    </div>
+
+    <div class="fineprint">Demo collegata alla pagina licenze: i pulsanti aprono il sistema licenze con il piano selezionato. Per la preselezione automatica occorre aggiungere il piccolo gestore parametro indicato insieme alla demo.</div>
+  </div>
+</section>
+
+
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-head">
+      <h2>Domande frequenti</h2>
+      <p>Le risposte essenziali prima di iniziare.</p>
+    </div>
+
+    <div class="faq-grid">
+      <article class="faq-item">
+        <h3>AnnuncioFacile AI funziona solo con eBay?</h3>
+        <p>No. Può generare e adattare annunci per eBay, Subito.it, Vinted, Facebook, WhatsApp e per formule come “Svuota cantina / Regalo”. eBay resta però il canale con l’integrazione tecnica più avanzata.</p>
+      </article>
+
+      <article class="faq-item">
+        <h3>Perché eBay è il canale preferito?</h3>
+        <p>Perché l’ecosistema comprende anche eBay Manager e, per eBay, sono disponibili funzioni operative più avanzate tramite integrazione API.</p>
+      </article>
+
+      <article class="faq-item">
+        <h3>Serve installare qualcosa?</h3>
+        <p>No. AnnuncioFacile AI ed eBay Manager sono Web App e si usano direttamente dal browser.</p>
+      </article>
+
+      <article class="faq-item">
+        <h3>La stessa licenza vale per entrambi?</h3>
+        <p>Sì. Un unico codice licenza abilita AnnuncioFacile AI, eBay Manager e le ricerche tecniche / mercato previste dal piano scelto.</p>
+      </article>
+
+      <article class="faq-item">
+        <h3>Posso provarlo senza pagare?</h3>
+        <p>Sì. È previsto un Free Trial di 30 giorni con un numero limitato di operazioni e generazioni incluse.</p>
+      </article>
+
+      <article class="faq-item">
+        <h3>Cosa succede dopo l’acquisto?</h3>
+        <p>Dopo la registrazione dell’acquisto e il pagamento, ricevi il codice licenza da utilizzare nelle Web App della Suite.</p>
+      </article>
+    </div>
+
+    <div class="legal-note">
+      <strong>Nota:</strong> eBay Manager è uno strumento indipendente e non è affiliato, sponsorizzato o approvato da eBay.
+      Prima della pubblicazione con dominio definitivo conviene aggiungere una pagina Privacy/Condizioni completa.
+    </div>
+  </div>
+</section>
+
+<section class="container cta">
+  <h2>Prova l’ecosistema AnnuncioFacile AI</h2>
+  <p>Inizia gratuitamente oppure, se hai già una licenza, apri direttamente la Web App. AnnuncioFacile AI lavora su più marketplace, con eBay come canale più integrato.</p>
+  <a href="https://script.google.com/macros/s/AKfycbxZAC-CFOSUvuus-orY61k7kkSgEmOtHaLH86kQJUSdu7nyX4aPtc9HgjZq4-i4CAXF/exec?piano=freeTrial" target="_blank" class="btn btn-primary">Inizia la prova gratuita →</a>
+  <a href="https://script.google.com/macros/s/AKfycbzTcIj3tNynqnkG4Pup37gp79amL0AVBMsuk-GO_yb0JoF9ZTi31SkpnXGD3dMc_HaB/exec" target="_blank" class="btn btn-secondary" style="margin-left:10px;">Apri AnnuncioFacile AI</a>
+</section>
+
+<footer>
+  <div class="container footer">
+    <div><strong>AnnuncioFacile AI</strong> + eBay Manager<br><span style="font-size:.84rem;">Supporto commerciale disponibile dalla pagina licenze.</span></div>
+    <div><a href="#faq">FAQ</a> · Privacy/Condizioni in preparazione · © 2026</div>
+  </div>
+</footer>
+
+
+</body>
+</html>
